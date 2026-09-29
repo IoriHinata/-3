@@ -1,0 +1,31 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-debug-apk:
+    name: Build debug APK
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1.1.3
+        with:
+          workdir: .
+          buildozer_version: stable
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: charlie-android-apk
+          path: bin/*.apk
+          if-no-files-found: error
+          retention-days: 14
