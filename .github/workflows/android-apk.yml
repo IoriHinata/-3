@@ -1,0 +1,35 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-debug-apk:
+    name: Build debug APK
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      # Run the official Kivy Buildozer container directly.  The previous
+      # third-party action tries to chown the workspace to a non-existent
+      # `user` account and fails before Buildozer starts.
+      - name: Build with Buildozer
+        run: |
+          docker run --rm \
+            --volume "${GITHUB_WORKSPACE}:/home/user/hostcwd" \
+            kivy/buildozer:latest \
+            android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: charlie-android-apk
+          path: bin/*.apk
+          if-no-files-found: error
+          retention-days: 14
