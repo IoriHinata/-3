@@ -16,6 +16,8 @@ android.ndk_api = 24
 android.archs = arm64-v8a,armeabi-v7a
 android.allow_backup = False
 android.private_storage = True
+# Required for non-interactive GitHub Actions SDK installation.
+android.accept_sdk_license = True
 
 [buildozer]
 log_level = 2
