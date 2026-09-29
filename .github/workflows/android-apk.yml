@@ -16,11 +16,15 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
+      # Run the official Kivy Buildozer container directly.  The previous
+      # third-party action tries to chown the workspace to a non-existent
+      # `user` account and fails before Buildozer starts.
       - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1.1.3
-        with:
-          workdir: .
-          buildozer_version: stable
+        run: |
+          docker run --rm \
+            --volume "${GITHUB_WORKSPACE}:/home/user/hostcwd" \
+            kivy/buildozer:latest \
+            android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
