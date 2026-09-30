@@ -1,0 +1,12 @@
+# Android/Buildozer outputs
+.buildozer/
+bin/
+*.apk
+*.aab
+
+# Python runtime files
+__pycache__/
+*.py[cod]
+charlie_brain.json
+charlie_brain.json.tmp
+buildozer-output.log
