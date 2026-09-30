@@ -9,3 +9,4 @@ __pycache__/
 *.py[cod]
 charlie_brain.json
 charlie_brain.json.tmp
+buildozer-output.log

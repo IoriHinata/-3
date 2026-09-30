@@ -13,7 +13,7 @@ android.permissions = CAMERA,RECORD_AUDIO
 android.api = 35
 android.minapi = 24
 android.ndk_api = 24
-android.archs = arm64-v8a,armeabi-v7a
+android.archs = arm64-v8a
 android.allow_backup = False
 android.private_storage = True
 # Required for non-interactive GitHub Actions SDK installation.

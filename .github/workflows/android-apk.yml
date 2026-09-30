@@ -20,16 +20,30 @@ jobs:
       # third-party action tries to chown the workspace to a non-existent
       # `user` account and fails before Buildozer starts.
       - name: Build with Buildozer
+        shell: bash
         run: |
+          set -o pipefail
           docker run --rm \
             --volume "${GITHUB_WORKSPACE}:/home/user/hostcwd" \
             kivy/buildozer:latest \
-            android debug
+            android debug 2>&1 | tee buildozer-output.log
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: charlie-android-apk
           path: bin/*.apk
           if-no-files-found: error
+          retention-days: 14
+
+      # This is uploaded even when compilation fails, so the last error lines
+      # can be viewed/downloaded from a phone without copying a long Actions log.
+      - name: Upload build log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: charlie-build-log
+          path: buildozer-output.log
+          if-no-files-found: warn
           retention-days: 14
